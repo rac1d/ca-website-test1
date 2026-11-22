@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F8FAFC;
+    color: #0B1F3A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #17469E;
+    color: #FFFFFF;
+  }
+
+  :where(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid theme('colors.primary.DEFAULT');
+    outline-offset: 3px;
+  }
+
+  .bg-navy :where(a, button):focus-visible {
+    outline-color: theme('colors.accent.DEFAULT');
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-grotesk {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-mono-display {
+    font-family: 'Space Mono', monospace;
+  }
+
+  .grain {
+    position: relative;
+  }
+
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-grotesk text-sm font-bold text-navy transition-all duration-300 hover:scale-105 hover:bg-accent-light active:scale-95;
+  }
+
+  .btn-navy {
+    @apply inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-grotesk text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-primary-hover active:scale-95;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-border px-6 py-3 font-grotesk text-sm font-bold text-primary transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-cream/25 px-6 py-3 font-grotesk text-sm font-bold text-cream transition-all duration-300 hover:border-accent hover:text-accent active:scale-95;
+  }
+}
