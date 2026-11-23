@@ -5,11 +5,20 @@ import CTA from '@/components/CTA';
 import ModuleCard from '@/components/ModuleCard';
 import SectionHeading from '@/components/SectionHeading';
 import { useInView } from '@/hooks/useInView';
-import { hasYouTubeId, modules } from '@/data/site';
+import { useVideoModules } from '@/data/modules';
 import { Info } from 'lucide-react';
 
 export default function Modules() {
   const { ref, inView } = useInView<HTMLDivElement>();
+  const request = useVideoModules();
+  const modules = request.status === 'ready' ? request.data : [];
+  const notice = {
+    loading: 'Loading video tutorials…',
+    error: 'Video tutorials could not be loaded. Refresh the page to try again.',
+    ready: modules.length > 0
+      ? 'Select the play button on any video to watch it here.'
+      : 'No video tutorials are available yet.',
+  }[request.status];
 
   return (
     <>
@@ -27,10 +36,8 @@ export default function Modules() {
             {/* Note banner */}
             <div className="mb-12 flex items-start gap-3 rounded-2xl border border-border bg-primary-soft px-6 py-4">
               <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-              <p className="font-inter text-sm leading-relaxed text-navy/70">
-                {modules.some(({ youtubeId }) => hasYouTubeId(youtubeId))
-                  ? 'Select the play button on any video to watch it here.'
-                  : 'Video tutorials are not yet available. You can browse the module topics below.'}
+              <p className="font-inter text-sm leading-relaxed text-navy/70" role={request.status === 'error' ? 'alert' : 'status'}>
+                {notice}
               </p>
             </div>
 
@@ -40,9 +47,9 @@ export default function Modules() {
             />
 
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {modules.map((module, i) => (
+              {modules.map(({ documentId, module }, i) => (
                 <ModuleCard
-                  key={module.id}
+                  key={documentId}
                   module={module}
                   index={i}
                   inView={inView}
